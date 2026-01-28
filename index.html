@@ -17,7 +17,23 @@
     .btn { margin-top:12px; }
     .btnSend { background:#16a34a; color:#fff; font-weight:800; }
     .btnClear { background:#ef4444; color:#fff; font-weight:800; }
-    .pill { display:inline-block; padding:6px 10px; border:1px solid #ddd; border-radius:999px; background:#fff; }
+
+    /* ✅ ESPACIO ENTRE TEMAS */
+    .categoria{
+      margin-top: 18px;
+      margin-bottom: 22px;
+      padding: 14px;
+      border: 1px solid #eee;
+      border-radius: 14px;
+      background: #fff;
+    }
+    .categoria h3{ margin: 0 0 10px; }
+    .categoria p{
+      margin: 0;
+      line-height: 1.5;
+      white-space: pre-line; /* respeta saltos de línea */
+    }
+    
   </style>
 </head>
 <body>
@@ -26,11 +42,15 @@
     <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
       <div>
         <h2>🎣 Registro Torneo</h2>
+         <small>Inscripción rápida por categorías</small>
+      </div>
+    </div>
+
+    <!-- ✅ CATEGORÍAS (separadas y con espacio) -->
       <section class="categoria">
   <h3>🎣 Natural</h3>
   <p>
-        Natural: 
-        Natural es el torneo de entrada de la liga.
+Natural: Natural es el torneo de entrada de la liga.
 Está diseñado para nuevos talentos y pescadores puristas de kayak que buscan desarrollar sus habilidades competitivas dentro de un sistema formal y accesible.
 
 ✔️ Cuota más baja
@@ -56,8 +76,9 @@ Natural no se trata solo de ganar premios, sino de construir base, constancia y 
 </section>
 
 <section class="categoria">
-        Prime: 
-        Prime es la categoría de competencia avanzada.
+  <h3>🔥 Prime</h3>
+      <p>
+Prime: Prime es la categoría de competencia avanzada.
 Aquí compiten pescadores que ya buscan bolsas monetarias importantes, visibilidad y reconocimiento, dentro de un formato más exigente.
 
 ✔️ Nivel competitivo alto
@@ -80,8 +101,9 @@ Prime es para quienes buscan recompensas reales, reconocimiento y dar el siguien
 </section>
 
 <section class="categoria">
-      Legends
-      Legends es la categoría élite de la Premier Fishing League.
+   <h3>🏆 Legends</h3>
+    <p>
+Legends: Legends es la categoría élite de la Premier Fishing League.
 Solo los mejores acceden.
 
 ✔️ Cupo limitado
