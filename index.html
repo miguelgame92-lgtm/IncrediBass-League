@@ -129,12 +129,12 @@ Legends no es solo competir por premios, es formar parte del nivel más alto de 
     </div>
 
     <label for="phone">Teléfono (WhatsApp)</label>
-    <input id="phone" inputmode="tel" placeholder="Ej: 8448072714" />
+    <input id="phone" inputmode="tel" placeholder="Ej: 8441250000" />
      </div>
     </div>
 
-    <label for="Email">Email</label>
-    <input id="Email" inputmode="Email" placeholder="Ej: torneo@hotmail.com" />
+    <label for="correo">correo</label>
+    <input id="correo" inputmode="correo" placeholder="Ej: torneo@hotmail.com" />
 
     <div class="row">
       <button class="btn btnClear" onclick="clearForm()">Limpiar</button>
@@ -157,6 +157,7 @@ Legends no es solo competir por premios, es formar parte del nivel más alto de 
     document.getElementById("name").value = "";
     document.getElementById("city").value = "";
     document.getElementById("phone").value = "";
+    document.getElementById("correo").value = "";
   }
 
   function sendWhatsApp(){
@@ -165,9 +166,10 @@ Legends no es solo competir por premios, es formar parte del nivel más alto de 
     const name = document.getElementById("name").value.trim();
     const city = document.getElementById("city").value.trim();
     const phone = document.getElementById("phone").value.trim();
+     const correo = document.getElementById("correo").value.trim();
 
-    if (!tournament || !category || !name || !city || !phone || !Email){
-      alert("Completa torneo, categoría, nombre, ciudad. teléfono y Emial.");
+    if (!tournament || !category || !name || !city || !phone || !correo){
+      alert("Completa torneo, categoría, nombre, ciudad. teléfono y correo.");
       return;
     }
 
@@ -179,7 +181,7 @@ Categoría: ${category}
 Nombre: ${name}
 Ciudad: ${city}
 Tel: ${phone}
-Tel: ${Email}`;
+Correo: ${correo}`;
 
     const url = `https://wa.me/${ORGANIZER_WHATSAPP}?text=${encodeURIComponent(msg)}`;
     window.location.href = url;
