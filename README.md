@@ -1,2 +1,0 @@
-# IncrediBass-League
-IncrediBass League
