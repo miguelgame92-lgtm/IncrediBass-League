@@ -28,15 +28,85 @@
         <h2>🎣 Registro Torneo</h2>
         <small>Inscripción rápida por categorías</small>
       </div>
-      <div class="pill">Natural / Prime</div>
+      <div class="pill">
+        Natural: 
+        Natural es el torneo de entrada de la liga.
+Está diseñado para nuevos talentos y pescadores puristas de kayak que buscan desarrollar sus habilidades competitivas dentro de un sistema formal y accesible.
+
+✔️ Cuota más baja
+✔️ Ranking anual
+✔️ Solo kayaks de remos o pedales
+❌ No motores
+❌ No FFS
+
+Al completar tu registro, recibirás acompañamiento paso a paso para competir y usar la app oficial, incluso si es tu primer torneo.
+
+💰 Costo de inscripción: $_
+Es la cuota más accesible de la liga y está pensada para que puedas competir, aprender y crecer sin presión económica.
+
+🎁 ¿Qué incluye y qué puedes ganar?
+✔️ Participación oficial en la jornada
+✔️ Ranking anual de la liga
+✔️ Rifas y premios en especie
+✔️ Reconocimientos por desempeño
+✔️ Experiencia competitiva real
+
+Natural no se trata solo de ganar premios, sino de construir base, constancia y nivel competitivo dentro de un sistema formal. / 
+        Prime: 
+        Prime es la categoría de competencia avanzada.
+Aquí compiten pescadores que ya buscan bolsas monetarias importantes, visibilidad y reconocimiento, dentro de un formato más exigente.
+
+✔️ Nivel competitivo alto
+✔️ Premios en efectivo
+✔️Ascenso a la liga Legends al finalizar el año 
+
+Prime es el camino natural para aspirar a Legends, aunque también puedes participar de forma intermitente para buscar premios y experiencia.
+
+💰 Costo de inscripción: $1000+50
+Una cuota acorde al nivel competitivo y a las recompensas que se disputan.
+
+🏆 ¿Qué puedes ganar en Prime?
+✔️ Premios en efectivo por jornada con $20,000 de bolsa asegurada. 
+✔️ Rifas exclusivas
+✔️ Ranking competitivo con proyección
+✔️ Visibilidad dentro de la liga
+
+Prime es para quienes buscan recompensas reales, reconocimiento y dar el siguiente paso dentro del sistema de la Premier Fishing League. / 
+      Legends
+      Legends es la categoría élite de la Premier Fishing League.
+Solo los mejores acceden.
+
+✔️ Cupo limitado
+✔️ Bolsa asegurada por jornada
+✔️ Producción profesional
+✔️ Cobertura dentro del agua
+✔️ Ranking cerrado
+
+Aquí compiten quienes ya demostraron consistencia y resultados dentro del sistema.
+
+Legends es la categoría élite.
+Aquí solo compiten los mejores.
+
+💰 Costo de inscripción: $7000 anual. 
+Una cuota diseñada para sostener un formato profesional y exclusivo.
+
+🏅 ¿Qué ofrece Legends?
+✔️ Bolsa asegurada por jornada
+✔️ Bonos adicionales
+✔️ Bolsa final acumulada
+✔️ Producción profesional
+✔️ Cobertura y seguimiento dentro del agua
+✔️ Ranking cerrado de élite
+
+Legends no es solo competir por premios, es formar parte del nivel más alto de la liga.</div>
     </div>
 
     <label for="tournament">¿A qué torneo te inscribes?</label>
     <select id="tournament">
       <option value="">Selecciona un torneo</option>
-      <option value="Torneo 1">Torneo 1</option>
-      <option value="Torneo 2">Torneo 2</option>
-      <option value="Torneo 3">Torneo 3</option>
+      <option value="Presa las blancas">Torneo 1</option>
+      <option value="Presa la boca">Torneo 2</option>
+      <option value="TPresa el cuchillo">Torneo 3</option>
     </select>
 
     <label for="category">Categoría</label>
@@ -44,21 +114,27 @@
       <option value="">Selecciona categoría</option>
       <option value="Natural">Natural</option>
       <option value="Prime">Prime</option>
+      <option value="Legend">Legend</option>
     </select>
 
     <div class="row">
       <div>
         <label for="name">Nombre completo</label>
-        <input id="name" placeholder="Ej: José García" />
+        <input id="name" placeholder="Ej: Pedro Morales" />
       </div>
       <div>
         <label for="city">Ciudad</label>
-        <input id="city" placeholder="Ej: Saltillo" />
+        <input id="city" placeholder="Ej: Monterrey" />
       </div>
     </div>
 
     <label for="phone">Teléfono (WhatsApp)</label>
     <input id="phone" inputmode="tel" placeholder="Ej: 8448072714" />
+     </div>
+    </div>
+
+    <label for="Email">Email</label>
+    <input id="Email" inputmode="Email" placeholder="Ej: torneo@hotmail.com" />
 
     <div class="row">
       <button class="btn btnClear" onclick="clearForm()">Limpiar</button>
@@ -72,7 +148,7 @@
 
 <script>
   // 📲 Cambia este número al WhatsApp del organizador (sin +, sin espacios)
-  // México común: 521 + 10 dígitos. Ej: 5218448072714
+  // México común: 521 + 10 dígitos. Ej: 521800000000
   const ORGANIZER_WHATSAPP = "5218120777516";
 
   function clearForm(){
@@ -90,8 +166,8 @@
     const city = document.getElementById("city").value.trim();
     const phone = document.getElementById("phone").value.trim();
 
-    if (!tournament || !category || !name || !city || !phone){
-      alert("Completa torneo, categoría, nombre, ciudad y teléfono.");
+    if (!tournament || !category || !name || !city || !phone || !Email){
+      alert("Completa torneo, categoría, nombre, ciudad. teléfono y Emial.");
       return;
     }
 
@@ -102,7 +178,8 @@ Categoría: ${category}
 
 Nombre: ${name}
 Ciudad: ${city}
-Tel: ${phone}`;
+Tel: ${phone}
+Tel: ${Email}`;
 
     const url = `https://wa.me/${ORGANIZER_WHATSAPP}?text=${encodeURIComponent(msg)}`;
     window.location.href = url;
