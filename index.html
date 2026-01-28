@@ -4,220 +4,423 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Registro Torneo de Pesca</title>
-  <style>
-    body { font-family: system-ui, Arial; margin: 16px; background: #fafafa; }
-    .card { background:#fff; border:1px solid #eee; border-radius:16px; padding:14px; box-shadow:0 1px 10px rgba(0,0,0,.05); }
-    h2 { margin: 0 0 6px; }
-    small { color:#555; }
-    label { display:block; font-weight:700; margin-top:12px; margin-bottom:6px; }
-    input, select { width:100%; padding:12px; border:1px solid #ddd; border-radius:12px; font-size:16px; }
-    .row { display:grid; grid-template-columns: 1fr 1fr; gap:12px; }
-    @media (max-width: 560px){ .row{ grid-template-columns: 1fr; } }
-    button { width:100%; padding:12px; border:0; border-radius:14px; font-size:16px; cursor:pointer; }
-    .btn { margin-top:12px; }
-    .btnSend { background:#16a34a; color:#fff; font-weight:800; }
-    .btnClear { background:#ef4444; color:#fff; font-weight:800; }
 
-    /* ✅ ESPACIO ENTRE TEMAS */
-    .categoria{
-      margin-top: 18px;
-      margin-bottom: 22px;
+  <style>
+    :root{
+      --bg:#f6f7fb;
+      --card:#ffffff;
+      --text:#0f172a;
+      --muted:#475569;
+      --line:#e5e7eb;
+      --shadow: 0 10px 30px rgba(2,6,23,.08);
+      --green:#16a34a;
+      --red:#ef4444;
+      --blue:#2563eb;
+      --radius:18px;
+    }
+
+    *{ box-sizing:border-box; }
+    body{
+      margin:16px;
+      background:var(--bg);
+      color:var(--text);
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    }
+
+    .wrap{ max-width: 980px; margin: 0 auto; }
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      padding:16px;
+      box-shadow: var(--shadow);
+    }
+
+    header{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:12px;
+      flex-wrap:wrap;
+      margin-bottom: 14px;
+    }
+    h1{ font-size: 20px; margin:0; letter-spacing:.2px; }
+    .sub{ margin:6px 0 0; color:var(--muted); font-size: 13px; }
+
+    .grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap:14px;
+      margin: 14px 0 10px;
+    }
+    @media (max-width: 880px){ .grid{ grid-template-columns: 1fr; } }
+
+    .tier{
+      border:1px solid var(--line);
+      border-radius: 16px;
       padding: 14px;
-      border: 1px solid #eee;
-      border-radius: 14px;
       background: #fff;
+      transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+      cursor: pointer;
     }
-    .categoria h3{ margin: 0 0 10px; }
-    .categoria p{
-      margin: 0;
+    .tier:hover{
+      transform: translateY(-1px);
+      box-shadow: 0 12px 22px rgba(2,6,23,.08);
+    }
+
+    /* ✅ tarjeta seleccionada */
+    .tier.active{
+      border-color: rgba(37,99,235,.55);
+      box-shadow: 0 18px 30px rgba(37,99,235,.12);
+      outline: 4px solid rgba(37,99,235,.12);
+    }
+
+    .tierTop{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap:10px;
+      margin-bottom: 10px;
+    }
+    .tier h2{ margin:0; font-size: 16px; }
+
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+      font-size: 12px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border:1px solid var(--line);
+      color: var(--muted);
+      white-space: nowrap;
+      background:#fff;
+    }
+    .price{
+      font-weight: 900;
+      color: var(--text);
+      border-color: rgba(37,99,235,.25);
+      background: rgba(37,99,235,.06);
+    }
+
+    .desc{
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+      margin: 0 0 10px;
+    }
+
+    .chips{
+      display:flex;
+      flex-wrap:wrap;
+      gap:8px;
+      margin: 10px 0 12px;
+    }
+    .chip{
+      font-size: 12px;
+      padding:6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background:#fff;
+      color: var(--text);
+      display:inline-flex;
+      align-items:center;
+      gap:6px;
+    }
+    .chip.ok{ border-color: rgba(22,163,74,.25); background: rgba(22,163,74,.08); }
+    .chip.no{ border-color: rgba(239,68,68,.25); background: rgba(239,68,68,.08); }
+
+    .tier ul{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: var(--text);
+      font-size: 13px;
       line-height: 1.5;
-      white-space: pre-line; /* respeta saltos de línea */
     }
-    
+    .tier li{ margin: 6px 0; }
+
+    .label{
+      display:block;
+      font-weight: 900;
+      margin-top: 14px;
+      margin-bottom: 6px;
+      font-size: 13px;
+    }
+
+    input, select{
+      width:100%;
+      padding:12px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      font-size:16px;
+      background:#fff;
+      outline: none;
+    }
+    input:focus, select:focus{
+      border-color: rgba(37,99,235,.6);
+      box-shadow: 0 0 0 4px rgba(37,99,235,.12);
+    }
+
+    .row{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+    }
+    @media (max-width: 560px){ .row{ grid-template-columns: 1fr; } }
+
+    .actions{
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:12px;
+      margin-top: 12px;
+    }
+
+    button{
+      width:100%;
+      padding:12px;
+      border:0;
+      border-radius: 14px;
+      font-size: 16px;
+      cursor: pointer;
+      font-weight: 900;
+    }
+    .btnSend{ background: var(--green); color:#fff; }
+    .btnClear{ background: var(--red); color:#fff; }
+
+    .note{
+      display:block;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .divider{
+      height:1px;
+      background: var(--line);
+      margin: 14px 0;
+      border-radius: 999px;
+    }
   </style>
 </head>
+
 <body>
+  <div class="wrap">
+    <div class="card">
+      <header>
+        <div>
+          <h1>🎣 Registro Torneo</h1>
+          <p class="sub">Inscripción rápida por categorías</p>
+        </div>
+        <span class="badge">📌 Completa el formulario y se envía por WhatsApp</span>
+      </header>
 
-  <div class="card">
-    <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; flex-wrap:wrap;">
-      <div>
-        <h2>🎣 Registro Torneo</h2>
-         <small>Inscripción rápida por categorías</small>
+      <!-- ✅ CATEGORÍAS -->
+      <div class="grid">
+        <section class="tier" id="tier-natural" data-cat="Natural">
+          <div class="tierTop">
+            <h2>🎣 Natural</h2>
+            <span class="badge price" id="price-natural">💰 $_</span>
+          </div>
+          <p class="desc">Torneo de entrada. Ideal para nuevos talentos y puristas de kayak.</p>
+          <div class="chips">
+            <span class="chip ok">✅ Cuota más baja</span>
+            <span class="chip ok">✅ Ranking anual</span>
+            <span class="chip ok">✅ Remo o pedales</span>
+            <span class="chip no">❌ No motores</span>
+            <span class="chip no">❌ No FFS</span>
+          </div>
+          <ul>
+            <li>Participación oficial + ranking anual</li>
+            <li>Rifas/premios en especie</li>
+            <li>Acompañamiento para usar la app</li>
+          </ul>
+        </section>
+
+        <section class="tier" id="tier-prime" data-cat="Prime">
+          <div class="tierTop">
+            <h2>🔥 Prime</h2>
+            <span class="badge price" id="price-prime">💰 $1000 + $50</span>
+          </div>
+          <p class="desc">Competencia avanzada con premios en efectivo y visibilidad.</p>
+          <div class="chips">
+            <span class="chip ok">✅ Nivel competitivo alto</span>
+            <span class="chip ok">✅ Premios en efectivo</span>
+            <span class="chip ok">✅ Proyección a Legends</span>
+          </div>
+          <ul>
+            <li>Premios por jornada (ej. $20,000 bolsa)</li>
+            <li>Rifas exclusivas</li>
+            <li>Ranking competitivo con proyección</li>
+          </ul>
+        </section>
+
+        <section class="tier" id="tier-legend" data-cat="Legend">
+          <div class="tierTop">
+            <h2>🏆 Legends</h2>
+            <span class="badge price" id="price-legend">💰 $7000 anual</span>
+          </div>
+          <p class="desc">Categoría élite. Cupo limitado y formato profesional.</p>
+          <div class="chips">
+            <span class="chip ok">✅ Cupo limitado</span>
+            <span class="chip ok">✅ Producción pro</span>
+            <span class="chip ok">✅ Cobertura en agua</span>
+            <span class="chip ok">✅ Ranking cerrado</span>
+          </div>
+          <ul>
+            <li>Bolsa asegurada por jornada + bonos</li>
+            <li>Bolsa final acumulada</li>
+            <li>Producción y seguimiento profesional</li>
+          </ul>
+        </section>
       </div>
-    </div>
 
-    <!-- ✅ CATEGORÍAS (separadas y con espacio) -->
-      <section class="categoria">
-  <h3>🎣 Natural</h3>
-  <p>
-Natural: Natural es el torneo de entrada de la liga.
-Está diseñado para nuevos talentos y pescadores puristas de kayak que buscan desarrollar sus habilidades competitivas dentro de un sistema formal y accesible.
+      <div class="divider"></div>
 
-✔️ Cuota más baja
-✔️ Ranking anual
-✔️ Solo kayaks de remos o pedales
-❌ No motores
-❌ No FFS
+      <!-- ✅ FORMULARIO -->
+      <label class="label" for="tournament">¿A qué torneo te inscribes?</label>
+      <select id="tournament">
+        <option value="">Selecciona un torneo</option>
+        <option value="Presa las blancas">Presa las blancas</option>
+        <option value="Presa la boca">Presa la boca</option>
+        <option value="Presa el cuchillo">Presa el cuchillo</option>
+      </select>
 
-Al completar tu registro, recibirás acompañamiento paso a paso para competir y usar la app oficial, incluso si es tu primer torneo.
+      <label class="label" for="category">Categoría</label>
+      <select id="category">
+        <option value="">Selecciona categoría</option>
+        <option value="Natural">Natural</option>
+        <option value="Prime">Prime</option>
+        <option value="Legend">Legend</option>
+      </select>
 
-💰 Costo de inscripción: $_
-Es la cuota más accesible de la liga y está pensada para que puedas competir, aprender y crecer sin presión económica.
-
-🎁 ¿Qué incluye y qué puedes ganar?
-✔️ Participación oficial en la jornada
-✔️ Ranking anual de la liga
-✔️ Rifas y premios en especie
-✔️ Reconocimientos por desempeño
-✔️ Experiencia competitiva real
-
-Natural no se trata solo de ganar premios, sino de construir base, constancia y nivel competitivo dentro de un sistema formal. 
- </p>
-</section>
-
-<section class="categoria">
-  <h3>🔥 Prime</h3>
-      <p>
-Prime: Prime es la categoría de competencia avanzada.
-Aquí compiten pescadores que ya buscan bolsas monetarias importantes, visibilidad y reconocimiento, dentro de un formato más exigente.
-
-✔️ Nivel competitivo alto
-✔️ Premios en efectivo
-✔️Ascenso a la liga Legends al finalizar el año 
-
-Prime es el camino natural para aspirar a Legends, aunque también puedes participar de forma intermitente para buscar premios y experiencia.
-
-💰 Costo de inscripción: $1000+50
-Una cuota acorde al nivel competitivo y a las recompensas que se disputan.
-
-🏆 ¿Qué puedes ganar en Prime?
-✔️ Premios en efectivo por jornada con $20,000 de bolsa asegurada. 
-✔️ Rifas exclusivas
-✔️ Ranking competitivo con proyección
-✔️ Visibilidad dentro de la liga
-
-Prime es para quienes buscan recompensas reales, reconocimiento y dar el siguiente paso dentro del sistema de la Premier Fishing League. 
- </p>
-</section>
-
-<section class="categoria">
-   <h3>🏆 Legends</h3>
-    <p>
-Legends: Legends es la categoría élite de la Premier Fishing League.
-Solo los mejores acceden.
-
-✔️ Cupo limitado
-✔️ Bolsa asegurada por jornada
-✔️ Producción profesional
-✔️ Cobertura dentro del agua
-✔️ Ranking cerrado
-
-Aquí compiten quienes ya demostraron consistencia y resultados dentro del sistema.
-
-Legends es la categoría élite.
-Aquí solo compiten los mejores.
-
-💰 Costo de inscripción: $7000 anual. 
-Una cuota diseñada para sostener un formato profesional y exclusivo.
-
-🏅 ¿Qué ofrece Legends?
-✔️ Bolsa asegurada por jornada
-✔️ Bonos adicionales
-✔️ Bolsa final acumulada
-✔️ Producción profesional
-✔️ Cobertura y seguimiento dentro del agua
-✔️ Ranking cerrado de élite
-
-Legends no es solo competir por premios, es formar parte del nivel más alto de la liga.
-     </p>
-</section>
-
-    <label for="tournament">¿A qué torneo te inscribes?</label>
-    <select id="tournament">
-      <option value="">Selecciona un torneo</option>
-      <option value="Presa las blancas">Presa las blancas</option>
-      <option value="Presa la boca">Presa la boca</option>
-      <option value="Presa el cuchillo">Presa el cuchillo</option>
-    </select>
-
-    <label for="category">Categoría</label>
-    <select id="category">
-      <option value="">Selecciona categoría</option>
-      <option value="Natural">Natural</option>
-      <option value="Prime">Prime</option>
-      <option value="Legend">Legend</option>
-    </select>
-
-    <div class="row">
-      <div>
-        <label for="name">Nombre completo</label>
-        <input id="name" placeholder="Ej: Pedro Morales" />
+      <!-- ✅ Precio dinámico -->
+      <div style="margin-top:10px;">
+        <span class="badge">💵 Costo seleccionado:</span>
+        <span class="badge price" id="selectedPrice">—</span>
       </div>
-      <div>
-        <label for="city">Ciudad</label>
-        <input id="city" placeholder="Ej: Monterrey" />
+
+      <div class="row">
+        <div>
+          <label class="label" for="name">Nombre completo</label>
+          <input id="name" placeholder="Ej: Pedro Morales" />
+        </div>
+        <div>
+          <label class="label" for="city">Ciudad</label>
+          <input id="city" placeholder="Ej: Monterrey" />
+        </div>
       </div>
+
+      <label class="label" for="phone">Teléfono (WhatsApp)</label>
+      <input id="phone" inputmode="tel" placeholder="Ej: 8441250000" />
+
+      <label class="label" for="correo">Correo</label>
+      <input id="correo" inputmode="email" placeholder="Ej: torneo@hotmail.com" />
+
+      <div class="actions">
+        <button class="btnClear" onclick="clearForm()">Limpiar</button>
+        <button class="btnSend" onclick="sendWhatsApp()">Enviar registro</button>
+      </div>
+
+      <small class="note">
+        Tip: al inicio WhatsApp es lo más fácil. Luego lo conectamos a Google Sheets.
+      </small>
     </div>
-
-    <label for="phone">Teléfono (WhatsApp)</label>
-    <input id="phone" inputmode="tel" placeholder="Ej: 8441250000" />
-     </div>
-    </div>
-
-    <label for="correo">correo</label>
-    <input id="correo" inputmode="correo" placeholder="Ej: torneo@hotmail.com" />
-
-    <div class="row">
-      <button class="btn btnClear" onclick="clearForm()">Limpiar</button>
-      <button class="btn btnSend" onclick="sendWhatsApp()">Enviar registro</button>
-    </div>
-
-    <small style="display:block; margin-top:10px;">
-      Tip: al inicio WhatsApp es lo más fácil. Luego lo conectamos a Google Sheets.
-    </small>
   </div>
 
-<script>
-  // 📲 Cambia este número al WhatsApp del organizador (sin +, sin espacios)
-  // México común: 521 + 10 dígitos. Ej: 521800000000
-  const ORGANIZER_WHATSAPP = "5218120777516";
+  <script>
+    // 📲 Cambia este número al WhatsApp del organizador (sin +, sin espacios)
+    const ORGANIZER_WHATSAPP = "5218120777516";
 
-  function clearForm(){
-    document.getElementById("tournament").value = "";
-    document.getElementById("category").value = "";
-    document.getElementById("name").value = "";
-    document.getElementById("city").value = "";
-    document.getElementById("phone").value = "";
-    document.getElementById("correo").value = "";
-  }
+    // ✅ Precios por categoría (edítalos aquí)
+    const PRICES = {
+      Natural: "$500 + $50",
+      Prime: "$1000 + $50",
+      Legend: "$7000 anual"
+    };
 
-  function sendWhatsApp(){
-    const tournament = document.getElementById("tournament").value.trim();
-    const category = document.getElementById("category").value.trim();
-    const name = document.getElementById("name").value.trim();
-    const city = document.getElementById("city").value.trim();
-    const phone = document.getElementById("phone").value.trim();
-     const correo = document.getElementById("correo").value.trim();
+    const categorySelect = document.getElementById("category");
+    const selectedPriceEl = document.getElementById("selectedPrice");
 
-    if (!tournament || !category || !name || !city || !phone || !correo){
-      alert("Completa torneo, categoría, nombre, ciudad. teléfono y correo.");
-      return;
+    const tierEls = {
+      Natural: document.getElementById("tier-natural"),
+      Prime: document.getElementById("tier-prime"),
+      Legend: document.getElementById("tier-legend"),
+    };
+
+    // Click en tarjeta -> selecciona categoría
+    Object.keys(tierEls).forEach(cat => {
+      tierEls[cat].addEventListener("click", () => {
+        categorySelect.value = cat;
+        applyCategoryUI(cat);
+      });
+    });
+
+    // Cambiar select -> resalta tarjeta y actualiza precio
+    categorySelect.addEventListener("change", () => {
+      applyCategoryUI(categorySelect.value);
+    });
+
+    function applyCategoryUI(cat){
+      // Quitar selección previa
+      Object.values(tierEls).forEach(el => el.classList.remove("active"));
+
+      if(!cat){
+        selectedPriceEl.textContent = "—";
+        return;
+      }
+
+      // Resaltar tarjeta
+      if(tierEls[cat]) tierEls[cat].classList.add("active");
+
+      // Precio dinámico
+      selectedPriceEl.textContent = PRICES[cat] || "—";
+
+      // Scroll suave a formulario (opcional)
+      // document.getElementById("tournament").scrollIntoView({behavior:"smooth", block:"start"});
     }
 
-    const msg =
+    function clearForm(){
+      document.getElementById("tournament").value = "";
+      document.getElementById("category").value = "";
+      document.getElementById("name").value = "";
+      document.getElementById("city").value = "";
+      document.getElementById("phone").value = "";
+      document.getElementById("correo").value = "";
+      applyCategoryUI(""); // reset UI
+    }
+
+    function sendWhatsApp(){
+      const tournament = document.getElementById("tournament").value.trim();
+      const category = document.getElementById("category").value.trim();
+      const name = document.getElementById("name").value.trim();
+      const city = document.getElementById("city").value.trim();
+      const phone = document.getElementById("phone").value.trim();
+      const correo = document.getElementById("correo").value.trim();
+
+      if (!tournament || !category || !name || !city || !phone || !correo){
+        alert("Completa torneo, categoría, nombre, ciudad, teléfono y correo.");
+        return;
+      }
+
+      const price = PRICES[category] || "—";
+
+      const msg =
 `*REGISTRO TORNEO 🎣*
 Torneo: ${tournament}
 Categoría: ${category}
+Costo: ${price}
 
 Nombre: ${name}
 Ciudad: ${city}
 Tel: ${phone}
 Correo: ${correo}`;
 
-    const url = `https://wa.me/${ORGANIZER_WHATSAPP}?text=${encodeURIComponent(msg)}`;
-    window.location.href = url;
-  }
-</script>
+      const url = `https://wa.me/${ORGANIZER_WHATSAPP}?text=${encodeURIComponent(msg)}`;
+      window.location.href = url;
+    }
 
+    // Estado inicial
+    applyCategoryUI(categorySelect.value);
+  </script>
 </body>
 </html>
