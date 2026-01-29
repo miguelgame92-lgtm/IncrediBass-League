@@ -36,14 +36,16 @@
       box-shadow: var(--shadow);
     }
 
+    /* ✅ Header centrado para logo */
     header{
       display:flex;
-      align-items:flex-start;
-      justify-content:space-between;
-      gap:12px;
-      flex-wrap:wrap;
+      flex-direction:column;
+      align-items:center;
+      text-align:center;
+      gap:10px;
       margin-bottom: 14px;
     }
+
     h1{ font-size: 20px; margin:0; letter-spacing:.2px; }
     .sub{ margin:6px 0 0; color:var(--muted); font-size: 13px; }
 
@@ -68,7 +70,6 @@
       box-shadow: 0 12px 22px rgba(2,6,23,.08);
     }
 
-    /* ✅ tarjeta seleccionada */
     .tier.active{
       border-color: rgba(37,99,235,.55);
       box-shadow: 0 18px 30px rgba(37,99,235,.12);
@@ -187,58 +188,48 @@
     .btnSend{ background: var(--green); color:#fff; }
     .btnClear{ background: var(--red); color:#fff; }
 
-    .note{
-      display:block;
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: 12px;
+    .divider{
+      height:1px;
+      background: var(--line);
+      margin: 14px 0;
+      border-radius: 999px;
     }
 
-   .divider{
-  height:1px;
-  background: var(--line);
-  margin: 14px 0;
-  border-radius: 999px;
-}
-
-/* 🔥 LOGO PFL */
-.logoWrap{
-  width:100%;
-  display:flex;
-  justify-content:center;
-  margin-bottom:8px;
-}
-
-.logo{
-  max-width:160px;
-  width:100%;
-  height:auto;
-  filter: drop-shadow(0 8px 18px rgba(0,0,0,.45));
-}
-
-@media (max-width: 600px){
-  .logo{ max-width:130px; }
-}
+    /* 🔥 LOGO PFL */
+    .logoWrap{
+      width:100%;
+      display:flex;
+      justify-content:center;
+      margin-bottom:8px;
+    }
+    .logo{
+      max-width:160px;
+      width:100%;
+      height:auto;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,.45));
+    }
+    @media (max-width: 600px){
+      .logo{ max-width:130px; }
+    }
   </style>
 </head>
 
 <body>
   <div class="wrap">
-    </div>
     <div class="card">
-      </div>
+
       <header>
-  <div class="logoWrap">
-    <img src="assets/pfl-logo.jpg" alt="Premier Fishing League" class="logo">
-  </div>
+        <div class="logoWrap">
+          <img src="assets/pfl-logo.jpg" alt="Premier Fishing League" class="logo">
+        </div>
 
-  <div>
-    <h1>🎣 Registro Torneo</h1>
-    <p class="sub">Inscripción rápida por categorías</p>
-  </div>
+        <div>
+          <h1>🎣 Registro Torneo</h1>
+          <p class="sub">Inscripción rápida por categorías</p>
+        </div>
 
-  <span class="badge">📌 Completa el formulario y se envía por WhatsApp</span>
-</header>
+        <span class="badge">📌 Completa el formulario y se envía por WhatsApp</span>
+      </header>
 
       <!-- ✅ CATEGORÍAS -->
       <div class="grid">
@@ -311,7 +302,7 @@
         <option value="Presa las blancas 17 DE MAYO">Presa las blancas 17 DE MAYO</option>
         <option value="Presa la boca 14 DE JUNIO">Presa la boca 14 DE JUNIO</option>
         <option value="Presa el cuchillo 12 DE JULIO">Presa el cuchillo 12 DE JULIO</option>
-        <option value="Presa el las blancas 16 DE AGOSTO">Presa el las blancas 16 DE AGOSTO</option>
+        <option value="Presa las blancas 16 DE AGOSTO">Presa las blancas 16 DE AGOSTO</option>
       </select>
 
       <label class="label" for="category">Categoría</label>
@@ -322,7 +313,6 @@
         <option value="Legend">Legend</option>
       </select>
 
-      <!-- ✅ Precio dinámico -->
       <div style="margin-top:10px;">
         <span class="badge">💵 Costo seleccionado:</span>
         <span class="badge price" id="selectedPrice">—</span>
@@ -343,18 +333,19 @@
       <input id="phone" inputmode="tel" placeholder="Ej: 8441250000" />
 
       <label class="label" for="correo">Correo</label>
-      <input id="correo" inputmode="email" placeholder="Ej: torneo@hotmail.com" />
+      <input id="correo" type="email" inputmode="email" placeholder="Ej: torneo@hotmail.com" />
 
       <div class="actions">
-        <button class="btnClear" onclick="clearForm()">Limpiar</button>
-        <button class="btnSend" onclick="sendWhatsApp()">Enviar registro</button>
+        <button class="btnClear" type="button" onclick="clearForm()">Limpiar</button>
+        <button class="btnSend" type="button" onclick="sendWhatsApp()">Enviar registro</button>
       </div>
 
+    </div><!-- /card -->
+  </div><!-- /wrap -->
+
   <script>
-    // 📲 Cambia este número al WhatsApp del organizador (sin +, sin espacios)
     const ORGANIZER_WHATSAPP = "5218448072714";
 
-    // ✅ Precios por categoría (edítalos aquí)
     const PRICES = {
       Natural: "$550 + $50",
       Prime: "$1000 + $50",
@@ -370,7 +361,6 @@
       Legend: document.getElementById("tier-legend"),
     };
 
-    // Click en tarjeta -> selecciona categoría
     Object.keys(tierEls).forEach(cat => {
       tierEls[cat].addEventListener("click", () => {
         categorySelect.value = cat;
@@ -378,13 +368,11 @@
       });
     });
 
-    // Cambiar select -> resalta tarjeta y actualiza precio
     categorySelect.addEventListener("change", () => {
       applyCategoryUI(categorySelect.value);
     });
 
     function applyCategoryUI(cat){
-      // Quitar selección previa
       Object.values(tierEls).forEach(el => el.classList.remove("active"));
 
       if(!cat){
@@ -392,14 +380,8 @@
         return;
       }
 
-      // Resaltar tarjeta
       if(tierEls[cat]) tierEls[cat].classList.add("active");
-
-      // Precio dinámico
       selectedPriceEl.textContent = PRICES[cat] || "—";
-
-      // Scroll suave a formulario (opcional)
-      // document.getElementById("tournament").scrollIntoView({behavior:"smooth", block:"start"});
     }
 
     function clearForm(){
@@ -409,7 +391,7 @@
       document.getElementById("city").value = "";
       document.getElementById("phone").value = "";
       document.getElementById("correo").value = "";
-      applyCategoryUI(""); // reset UI
+      applyCategoryUI("");
     }
 
     function sendWhatsApp(){
@@ -442,7 +424,6 @@ Correo: ${correo}`;
       window.location.href = url;
     }
 
-    // Estado inicial
     applyCategoryUI(categorySelect.value);
   </script>
 </body>
